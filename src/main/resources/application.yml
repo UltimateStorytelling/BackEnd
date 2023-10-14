@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ultimatedb
+    username: mayaadmin
+    password: mayaadmin
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 100
+    show-sql: true
+
+#  servlet:
+#    multipart:
+#      max-request-size: 100MB
+#      max-file-size: 100MB
+
+jwt:
+  header: Authorization
+  secret: YXJ0bGFibGVhcnRsYWJsZWFydGxhYmxlYXJ0bGFibGVhcnRsYWJsZWFydGxhYmxlYXJ0bGFibGVhcnRsYWJsZQ==
+  token-validity-in-seconds: 2400 # ttl (?)
