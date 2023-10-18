@@ -33,6 +33,7 @@ public class MemberService {
                     .memberNickname(requestDTO.getMemberNickname())
                     .memberIsDeleted(false)
                     .memberRole(MemberRole.MEMBER)
+                    .reportCount(0)
                     .build();
 
             memberRepository.save(member);
@@ -46,7 +47,7 @@ public class MemberService {
     public void checkDuplicateMemberNickname(String memberNickname) {
 
         if (memberNickname == null || memberNickname.trim().isEmpty()) {
-            throw new IllegalArgumentException("이메일 값이 유효하지 않습니다.");
+            throw new IllegalArgumentException("닉네임이 유효하지 않습니다.");
         } else if(memberRepository.existsByMemberNickname(memberNickname)){
             throw new IllegalArgumentException("사용중인 닉네임 입니다.");
         }
@@ -57,7 +58,7 @@ public class MemberService {
     public void checkDuplicateMemberEmail(String memberEmail) {
 
         if (memberEmail == null || memberEmail.trim().isEmpty()) {
-            throw new IllegalArgumentException("이메일 값이 유효하지 않습니다.");
+            throw new IllegalArgumentException("이메일이 유효하지 않습니다.");
         }else if(memberRepository.existsByMemberEmail(memberEmail)){
             throw new IllegalArgumentException("사용중인 이메일 입니다.");
         }
