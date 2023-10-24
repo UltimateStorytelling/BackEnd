@@ -1,7 +1,13 @@
 package com.ultimatestorytelling.backend.member.command.application.service;
 
+import com.ultimatestorytelling.backend.jwt.TokenProvider;
 import com.ultimatestorytelling.backend.member.command.application.dto.sign.SignRequestDTO;
+import com.ultimatestorytelling.backend.member.command.application.dto.update.UpdateInfoRequestDTO;
+import com.ultimatestorytelling.backend.member.command.application.dto.update.UpdatePwdRequestDTO;
+import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Authority;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
+import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberSocialLogin;
+import com.ultimatestorytelling.backend.member.command.domain.repository.AuthorityRepository;
 import com.ultimatestorytelling.backend.member.command.domain.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +15,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,15 +31,22 @@ class MemberServiceTests {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
+    private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberServiceTests(MemberService memberService, MemberRepository memberRepository){
+    public MemberServiceTests(MemberService memberService, MemberRepository memberRepository, TokenProvider tokenProvider,
+                              AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder){
         this.memberService = memberService;
         this.memberRepository = memberRepository;
+        this.tokenProvider = tokenProvider;
+        this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Test
-    @DisplayName("회원가입")
+    @DisplayName("회원 가입")
     @Transactional
     void register() throws Exception {
         //given
@@ -53,7 +70,9 @@ class MemberServiceTests {
 
         //then
         assertEquals("test1@test.com",member1.get().getMemberEmail());
+        assertTrue(passwordEncoder.matches(memberDTO1.getMemberPwd(), member1.get().getMemberPwd()));
         assertEquals("test2@test.com",member2.get().getMemberEmail());
+        assertTrue(passwordEncoder.matches(memberDTO2.getMemberPwd(), member2.get().getMemberPwd()));
     }
 
     @ParameterizedTest
@@ -119,23 +138,130 @@ class MemberServiceTests {
     @Test
     @DisplayName("회원 삭제")
     @Transactional
-    void deleteMember(Long memberNo, String accessToken) {
+    void deleteMember() throws Exception {
         //given
-        //when
-        //then
+        SignRequestDTO memberDTO1 = SignRequestDTO.builder()
+                .memberEmail("test1@test.com")
+                .memberPwd("testtest123!")
+                .memberNickname("testtest1")
+                .build();
+        memberService.register(memberDTO1);
+
+        //회원번호 조회
+        Optional<Member> member = memberRepository.findMemberByMemberEmail("test1@test.com");
+        Long memberNo = member.get().getMemberNo();
+
+        //엑세스 토큰 발급
+        // 멤버 정보를 기반으로 JWT 액세스 토큰 생성
+        String accessToken = tokenProvider.createAccessToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
+        String refreshToken = tokenProvider.createRefreshToken();
+
+        //토큰을 db에 저장하는 과정
+        Authority authority = authorityRepository.findByMember(member.get())
+                .orElseGet(() -> Authority.builder()
+                        .member(member.get())
+                        .build());
+        authority.updateToken("Bearer", accessToken, refreshToken, MemberSocialLogin.LOCAL);
+
+        // when
+        memberService.deleteMember(memberNo, authority.getAccessToken());
+
+        // then
+        assertTrue(member.get().getMemberIsDeleted());
     }
 
     @Test
-    void changeMemberPwd() {
+    @DisplayName("회원 비밀번호 변경")
+    void changeMemberPwd() throws Exception {
         //given
+        SignRequestDTO memberDTO1 = SignRequestDTO.builder()
+                .memberEmail("test1@test.com")
+                .memberPwd("testtest123!")
+                .memberNickname("testtest1")
+                .build();
+        memberService.register(memberDTO1);
+        UpdatePwdRequestDTO updatePwdRequestDTO1 = UpdatePwdRequestDTO.builder()
+                .currentPassword("testtest1234!")
+                .memberPwd("testtest123!")
+                .build();
+
+        //회원번호 조회
+        Optional<Member> member = memberRepository.findMemberByMemberEmail("test1@test.com");
+        Long memberNo = member.get().getMemberNo();
+
+        //엑세스 토큰 발급
+        // 멤버 정보를 기반으로 JWT 액세스 토큰 생성
+        String accessToken = tokenProvider.createAccessToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
+        String refreshToken = tokenProvider.createRefreshToken();
+
+        //토큰을 db에 저장하는 과정
+        Authority authority = authorityRepository.findByMember(member.get())
+                .orElseGet(() -> Authority.builder()
+                        .member(member.get())
+                        .build());
+        authority.updateToken("Bearer", accessToken, refreshToken, MemberSocialLogin.LOCAL);
+
         //when
+        memberService.changeMemberPwd(updatePwdRequestDTO1, memberNo, authority.getAccessToken());
+
         //then
+        assertTrue(passwordEncoder.matches(updatePwdRequestDTO1.getCurrentPassword(), member.get().getMemberPwd()));
+
     }
 
     @Test
-    void updateMemberInfo() {
+    @DisplayName("회원 닉네임 변경")
+    void updateMemberInfo() throws Exception {
         //given
+        SignRequestDTO memberDTO1 = SignRequestDTO.builder()
+                .memberEmail("test1@test.com")
+                .memberPwd("testtest123!")
+                .memberNickname("testtest1")
+                .build();
+        memberService.register(memberDTO1);
+        UpdateInfoRequestDTO updateInfoRequestDTO1 = UpdateInfoRequestDTO.builder()
+                .memberNickname("testtest2")
+                .build();
+
+        //회원번호 조회
+        Optional<Member> member = memberRepository.findMemberByMemberEmail("test1@test.com");
+        Long memberNo = member.get().getMemberNo();
+
+        //엑세스 토큰 발급
+        // 멤버 정보를 기반으로 JWT 액세스 토큰 생성
+        String accessToken = tokenProvider.createAccessToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
+        String refreshToken = tokenProvider.createRefreshToken();
+
+        //토큰을 db에 저장하는 과정
+        Authority authority = authorityRepository.findByMember(member.get())
+                .orElseGet(() -> Authority.builder()
+                        .member(member.get())
+                        .build());
+        authority.updateToken("Bearer", accessToken, refreshToken, MemberSocialLogin.LOCAL);
+
         //when
+        memberService.updateMemberInfo(updateInfoRequestDTO1, memberNo, authority.getAccessToken());
+
         //then
+        assertEquals(updateInfoRequestDTO1.getMemberNickname(), member.get().getMemberNickname());
+
     }
 }

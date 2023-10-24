@@ -84,7 +84,6 @@ public class MemberService {
         }
 
         member.deleteMember(null, true, "탈퇴한 사용자 입니다.");
-
     }
 
     //비밀번호변경
