@@ -160,7 +160,13 @@ class MemberServiceTests {
                         Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
                 )
         );
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
 
         //토큰을 db에 저장하는 과정
         Authority authority = authorityRepository.findByMember(member.get())
@@ -204,7 +210,13 @@ class MemberServiceTests {
                         Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
                 )
         );
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
 
         //토큰을 db에 저장하는 과정
         Authority authority = authorityRepository.findByMember(member.get())
@@ -248,7 +260,13 @@ class MemberServiceTests {
                         Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
                 )
         );
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.get().getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.get().getMemberRole().name()))
+                )
+        );
 
         //토큰을 db에 저장하는 과정
         Authority authority = authorityRepository.findByMember(member.get())
