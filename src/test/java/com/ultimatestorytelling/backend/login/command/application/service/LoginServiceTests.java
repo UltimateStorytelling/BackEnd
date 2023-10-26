@@ -4,24 +4,16 @@ import com.ultimatestorytelling.backend.jwt.TokenProvider;
 import com.ultimatestorytelling.backend.login.command.application.dto.login.LoginRequestDTO;
 import com.ultimatestorytelling.backend.login.command.application.dto.login.LoginResponseDTO;
 import com.ultimatestorytelling.backend.member.command.application.dto.sign.SignRequestDTO;
-import com.ultimatestorytelling.backend.member.command.application.dto.update.UpdatePwdRequestDTO;
 import com.ultimatestorytelling.backend.member.command.application.service.MemberService;
-import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Authority;
-import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
-import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberSocialLogin;
 import com.ultimatestorytelling.backend.member.command.domain.repository.AuthorityRepository;
 import com.ultimatestorytelling.backend.member.command.domain.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
