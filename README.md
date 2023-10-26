@@ -18,7 +18,9 @@
         - Spring Security
         - JWT
 - 김지수
-  -
+  - 소설 등록 기능
+        - AI 서버 통신 
+        
 ***
 
 
