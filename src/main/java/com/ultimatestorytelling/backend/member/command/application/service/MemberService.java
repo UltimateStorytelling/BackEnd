@@ -69,11 +69,7 @@ public class MemberService {
     public void deleteMember(Long memberNo, String accessToken) {
 
         // 토큰의 유효성 검사
-        if (!tokenProvider.validateToken(accessToken)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-        }
-        // accessToken을 사용하여 사용자를 인증하고 해당 사용자의 정보를 가져옵니다.
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Authentication authentication = tokenProvider.validateAndGetAuthentication(accessToken);
         String userEmail = authentication.getName();
         Member member = memberRepository.findMemberByMemberNo(memberNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
@@ -91,12 +87,7 @@ public class MemberService {
     public void changeMemberPwd(UpdatePwdRequestDTO requestDTO, Long memberNo, String accessToken) {
 
         // 토큰의 유효성 검사
-        if (!tokenProvider.validateToken(accessToken)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-        }
-
-        // accessToken을 사용하여 사용자를 인증하고 해당 사용자의 정보를 가져옵니다.
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Authentication authentication = tokenProvider.validateAndGetAuthentication(accessToken);
         String userEmail = authentication.getName();
         Member member = memberRepository.findMemberByMemberNo(memberNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
@@ -121,12 +112,7 @@ public class MemberService {
     public void updateMemberInfo(UpdateInfoRequestDTO requestDTO, Long memberNo, String accessToken) {
 
         // 토큰의 유효성 검사
-        if (!tokenProvider.validateToken(accessToken)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-        }
-
-        // accessToken을 사용하여 사용자를 인증하고 해당 사용자의 정보를 가져옵니다.
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Authentication authentication = tokenProvider.validateAndGetAuthentication(accessToken);
         String userEmail = authentication.getName();
         Member member = memberRepository.findMemberByMemberNo(memberNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
