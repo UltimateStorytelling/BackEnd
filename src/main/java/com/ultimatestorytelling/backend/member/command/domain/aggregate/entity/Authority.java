@@ -45,25 +45,15 @@ public class Authority extends AuditingFields {
         this.member = member;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void setMemberSocialLogin(MemberSocialLogin memberSocialLogin) {
-        this.memberSocialLogin = memberSocialLogin;
-    }
-
     public void setMember(Member member) {
         this.member = member;
     }
+
+    //액세스토큰 재발행
+    public void reissueAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
 
     //업데이트 토큰
     public void updateToken(String tokenType, String accessToken, String refreshToken, MemberSocialLogin memberSocialLogin) {

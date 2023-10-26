@@ -46,8 +46,6 @@ public class LoginController {
         }
     }
 
-    // LoginController.java
-
     @ApiOperation(value = "액세스 토큰 재발급 요청")
     @PostMapping("/authentication/renew")
     public ResponseEntity<ResponseMessage> renewAccessToken(HttpServletRequest request) {
