@@ -1,9 +1,11 @@
 package com.ultimatestorytelling.backend.common.message;
 
+import com.ultimatestorytelling.backend.novel.command.application.dto.NovelDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
@@ -23,4 +25,6 @@ public class ResponseMessage {
         this.results = results;
     }
 
+    public ResponseMessage(HttpStatus httpStatus, String 소설_등록_성공, NovelDTO novelDTO) {
+    }
 }

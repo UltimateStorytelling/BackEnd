@@ -20,6 +20,7 @@
         - Spring Security
         - JWT
 - 김지수
+
     - 소설 작성 기능
         - Naver SmartEditor3.0
         - Tymeleaf 를 활용한 웹 페이지 구현
@@ -32,7 +33,7 @@
         - 회원가입 서비스 TDD구현 완료
 - 김지수
     - 
-***
+
 
 
 ## ⭐️ 기술스택
