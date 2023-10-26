@@ -39,19 +39,23 @@ public class Member extends AuditingFields {
     @Column
     private Boolean memberIsDeleted;
 
+    @Column
+    private int reportCount;
+
     //소셜 로그인 테이블 조인
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Authority> authority;
 
     @Builder
     public Member(Long memberNo, String memberEmail, String memberPwd, String memberImage,
-                  String memberNickname, boolean memberIsDeleted, MemberRole memberRole, List<Authority> authority){
+                  String memberNickname, boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority){
         this.memberNo = memberNo;
         this.memberEmail = memberEmail;
         this.memberPwd = memberPwd;
         this.memberImage = memberImage;
         this.memberNickname = memberNickname;
         this.memberIsDeleted = memberIsDeleted;
+        this.reportCount = reportCount;
         this.memberRole = memberRole;
         this.authority = authority;
     }
