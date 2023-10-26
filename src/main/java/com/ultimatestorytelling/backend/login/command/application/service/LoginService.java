@@ -9,9 +9,11 @@ import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.A
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberSocialLogin;
 import com.ultimatestorytelling.backend.member.command.domain.repository.AuthorityRepository;
+import com.ultimatestorytelling.backend.member.command.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class LoginService {
 
     private final LoginRepository loginRepository;
     private final AuthorityRepository authorityRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
@@ -46,9 +49,13 @@ public class LoginService {
                         Collections.singletonList(new SimpleGrantedAuthority(member.getMemberRole().name()))
                 )
         );
-
-        String refreshToken = tokenProvider.createRefreshToken();
-
+        String refreshToken = tokenProvider.createRefreshToken(
+                new UsernamePasswordAuthenticationToken(
+                        member.getMemberEmail(),
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority(member.getMemberRole().name()))
+                )
+        );
 
         // 처음로그인
         Authority authority = authorityRepository.findByMember(member)
@@ -76,10 +83,24 @@ public class LoginService {
     }
 
     //엑세스토큰 재발행
+    @Transactional
     public Map<String, Object> renewAccessToken(String refreshToken) {
 
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("accessToken", tokenProvider.renewAccessTokenUsingRefreshToken(refreshToken));
+        String renewAccessToken = tokenProvider.renewAccessTokenUsingRefreshToken(refreshToken);
+
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        String memberEmail = authentication.getName();
+        Member member = memberRepository.findMemberByMemberEmail(memberEmail)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        Authority authority = authorityRepository.findByMember(member)
+                .orElseGet(() -> Authority.builder()
+                        .member(member)
+                        .build());
+        authority.updateToken("Bearer", renewAccessToken, refreshToken, MemberSocialLogin.LOCAL);
+
+        resultMap.put("accessToken", renewAccessToken);
 
         return resultMap;
     }

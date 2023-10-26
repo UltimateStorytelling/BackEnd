@@ -1,5 +1,7 @@
 package com.ultimatestorytelling.backend.member.command.application.dto.sign;
 
+import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberRole;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
@@ -24,5 +26,10 @@ public class SignRequestDTO {
             message = "닉네임은 2자이상 16자이하, 영어 또는 숫자 또는 한글로 구성해야 합니다.")
     private String memberNickname;
 
-
+    @Builder
+    public SignRequestDTO(String memberEmail, String memberPwd, String memberNickname) {
+        this.memberEmail = memberEmail;
+        this.memberPwd = memberPwd;
+        this.memberNickname = memberNickname;
+    }
 }
