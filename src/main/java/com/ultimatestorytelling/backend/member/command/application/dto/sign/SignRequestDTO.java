@@ -1,6 +1,6 @@
 package com.ultimatestorytelling.backend.member.command.application.dto.sign;
 
-import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberRole;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
