@@ -63,6 +63,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    //리프레시토큰 생성
     public String createRefreshToken(Authentication authentication){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -94,12 +95,12 @@ public class TokenProvider implements InitializingBean {
     }
 
     // 토큰으로 클레임을 만들고 이를 이용해 유저 객체를 만들어서 최종적으로 authentication 객체를 리턴
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String accessToken) {
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(accessToken)
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
@@ -109,7 +110,7 @@ public class TokenProvider implements InitializingBean {
 
         User principal = new User(claims.getSubject(), "", authorities);
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }
 
     // 토큰의 유효성 검증을 수행
@@ -132,4 +133,13 @@ public class TokenProvider implements InitializingBean {
         }
         return false;
     }
+
+    // 토큰 검증로직 (서비스에서)
+    public Authentication validateAndGetAuthentication(String accessToken) {
+        if (!validateToken(accessToken)) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+        return getAuthentication(accessToken);
+    }
+
 }

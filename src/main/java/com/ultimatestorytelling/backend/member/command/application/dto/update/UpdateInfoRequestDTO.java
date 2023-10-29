@@ -1,12 +1,15 @@
 package com.ultimatestorytelling.backend.member.command.application.dto.update;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateInfoRequestDTO {
 
     @NotBlank

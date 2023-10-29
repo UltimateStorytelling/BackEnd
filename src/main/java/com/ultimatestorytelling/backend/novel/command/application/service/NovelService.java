@@ -1,5 +1,6 @@
 package com.ultimatestorytelling.backend.novel.command.application.service;
 
+
 import com.ultimatestorytelling.backend.exception.CustomException;
 import com.ultimatestorytelling.backend.exception.ErrorCode;
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelDTO;
@@ -11,12 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ public class NovelService {
     private final NovelRepository novelRepository;
 
     private final ModelMapper modelMapper;
+
 
     // 게시글 생성
     @Transactional
@@ -67,6 +71,7 @@ public class NovelService {
 
     public String novelAi(String detail) {
 
+
         RestTemplate rt = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -90,6 +95,5 @@ public class NovelService {
 
         return response;
     }
-
 
 }

@@ -34,7 +34,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "닉네임 중복 조회")
-    @GetMapping(value="/members/nickname/{memberNickname}/check")
+    @GetMapping(value="/members/nickname/check/{memberNickname}")
     public ResponseEntity<ResponseMessage> checkMemberNickname(@PathVariable String memberNickname) {
         try {
             memberService.checkDuplicateMemberNickname(memberNickname);
@@ -45,7 +45,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "이메일 중복 조회")
-    @GetMapping(value="/members/email/{memberEmail}/check")
+    @GetMapping(value="/members/email/check/{memberEmail}")
     public ResponseEntity<ResponseMessage> checkMemberEmail(@PathVariable String memberEmail) {
         try {
             memberService.checkDuplicateMemberEmail(memberEmail);

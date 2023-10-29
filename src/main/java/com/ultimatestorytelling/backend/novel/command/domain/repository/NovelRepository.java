@@ -1,5 +1,6 @@
 package com.ultimatestorytelling.backend.novel.command.domain.repository;
 
+
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelRequestDto;
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelResponseDto;
 import com.ultimatestorytelling.backend.novel.command.application.service.NovelService;

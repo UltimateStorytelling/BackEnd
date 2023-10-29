@@ -2,14 +2,17 @@ package com.ultimatestorytelling.backend.novel.command.application.controller;
 
 import com.ultimatestorytelling.backend.common.message.ResponseMessage;
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelDTO;
+
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelRequestDto;
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelResponseDto;
 import com.ultimatestorytelling.backend.novel.command.application.service.NovelService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class NovelController {
 
     private final NovelService novelService;
+
 
     @PostMapping("/novelai")
     public String novelAi(@RequestParam String detail) {
@@ -45,7 +49,6 @@ public class NovelController {
     public void deleteNovel(@PathVariable Long id) {
         novelService.delete(id);
     }
-
 
 
 }

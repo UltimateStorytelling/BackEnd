@@ -1,12 +1,15 @@
 package com.ultimatestorytelling.backend.member.command.application.dto.update;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdatePwdRequestDTO {
 
     @NotBlank(message = "변경할 패스워드를 입력해주세요.")

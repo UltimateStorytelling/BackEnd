@@ -5,10 +5,8 @@ import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.e
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthResponseDTO {
 

@@ -25,5 +25,4 @@ public class ResponseMessage {
         this.results = results;
     }
 
-
 }

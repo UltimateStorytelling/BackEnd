@@ -17,7 +17,7 @@ public class SignResponseDTO {
     private String memberImage;
 
     @Builder
-    public SignResponseDTO(Member member){
+    public SignResponseDTO(Member    member){
         this.memberNo = member.getMemberNo();
         this.memberEmail = member.getMemberEmail();
         this.memberNickname = member.getMemberNickname();
