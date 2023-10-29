@@ -2,36 +2,50 @@ package com.ultimatestorytelling.backend.novel.command.application.controller;
 
 import com.ultimatestorytelling.backend.common.message.ResponseMessage;
 import com.ultimatestorytelling.backend.novel.command.application.dto.NovelDTO;
+import com.ultimatestorytelling.backend.novel.command.application.dto.NovelRequestDto;
+import com.ultimatestorytelling.backend.novel.command.application.dto.NovelResponseDto;
 import com.ultimatestorytelling.backend.novel.command.application.service.NovelService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
+
 @RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class NovelController {
 
     private final NovelService novelService;
 
-    public NovelController(NovelService novelService) {
-        this.novelService = novelService;
-    }
-
     @PostMapping("/novelai")
-    public String novelDetail(@RequestParam String detail) {
-        return novelService.novelDetail(detail);
+    public String novelAi(@RequestParam String detail) {
+        return novelService.novelAi(detail);
     }
 
-    @PostMapping("/novel")
-    public ResponseEntity<ResponseMessage> registNovel(@RequestBody NovelDTO novelDTO) {
-
-        return ResponseEntity.ok().body(new ResponseMessage(HttpStatus.CREATED, "소설 등록 성공", novelService.registNovel(novelDTO)));
+    @PostMapping("/novelPost")
+    public Long novelSave(@RequestBody final NovelRequestDto params) {
+            return novelService.save(params);
     }
 
-    @PutMapping("/novel/{novelId}")
-    public ResponseEntity<ResponseMessage> updateNovel(@PathVariable Long novelId, @RequestBody NovelDTO novelDTO) {
-
-        return ResponseEntity.ok().body(new ResponseMessage(HttpStatus.CREATED, "소설 수정 성공", novelService.updateNovel(novelId, novelDTO)));
+    @GetMapping("/novelList")
+    public List<NovelResponseDto> findAll() {
+            return novelService.findAll();
     }
+
+    @PutMapping("/novels/{id}")
+    public Long novelSave(@PathVariable final Long id, @RequestBody final NovelRequestDto params) {
+            return novelService.update(id, params);
+    }
+
+    @DeleteMapping("/novels/{id}")
+    public void deleteNovel(@PathVariable Long id) {
+        novelService.delete(id);
+    }
+
+
 
 }

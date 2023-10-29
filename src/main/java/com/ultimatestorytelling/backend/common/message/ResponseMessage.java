@@ -25,6 +25,5 @@ public class ResponseMessage {
         this.results = results;
     }
 
-    public ResponseMessage(HttpStatus httpStatus, String 소설_등록_성공, NovelDTO novelDTO) {
-    }
+
 }
