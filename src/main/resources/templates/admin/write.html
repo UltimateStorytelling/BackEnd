@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>소설 작성 페이지</title>
+</head>
+<body>
+<h1>글쓰기 페이지</h1>
+
+<form action="/create" method="post" th:object="novelRequestDto">
+  <!-- 글 제목 입력란 -->
+  <label for="novelName">제목:</label>
+  <input type="text" id="novelName" name="novelName" th:field="novelName" required="required">
+  <br>
+
+  <!-- 주요 카테고리 입력란 -->
+  <label for="mainCategory">주요 카테고리:</label>
+  <input type="text" id="mainCategory" name="mainCategory" th:field="mainCategory" required="required">
+  <br>
+
+  <!-- 부 카테고리 입력란 -->
+  <label for="subCategory">부 카테고리:</label>
+  <input type="text" id="subCategory" name="subCategory" th:field="subCategory" required="required">
+  <br>
+
+  <!-- 세부 카테고리 입력란 -->
+  <label for="minCategory">세부 카테고리:</label>
+  <input type="text" id="minCategory" name="minCategory" th:field="minCategory" required="required">
+  <br>
+
+  <!-- 글 내용 입력란 -->
+  <label for="novelDetail">내용:</label>
+  <textarea id="novelDetail" name="novelDetail" th:field="novelDetail" required="required"></textarea>
+  <br>
+
+  <!-- 제출 버튼 -->
+  <button type="submit">글쓰기</button>
+</form>
+</body>
+</html>
