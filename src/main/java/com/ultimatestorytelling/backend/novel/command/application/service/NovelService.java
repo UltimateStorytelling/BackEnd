@@ -11,6 +11,8 @@ import com.ultimatestorytelling.backend.novel.command.domain.repository.NovelRep
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.http.*;
@@ -96,4 +98,12 @@ public class NovelService {
         return response;
     }
 
+    public NovelDTO findAllNovel(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0: pageable.getPageNumber() -1,
+                pageable.getPageSize(),
+                Sort.by("novelId").ascending());
+
+        return novelRepository.findAll(pageable).map(novel -> modelMapper.map(novel, NovelDTO.class));
+    }
 }

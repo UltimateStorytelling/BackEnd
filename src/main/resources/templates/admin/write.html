@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>소설 작성 페이지</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/smde/2.0.0/themes/delve.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/smde/2.0.0/smde.min.js"></script>
 </head>
 <body>
 <h1>글쓰기 페이지</h1>
 
-<form action="/create" method="post" th:object="novelRequestDto">
+<form class="wow fadeInup" data-wow-delay="0.3s" th:action="@{/novel/create}" method="post" th:object="${novelRequestDto}">
+  <div class="col-12">
+    <div class="form-floating">
+      <input type="text" th:field="*{novelName}" class="form-control" id="novelName" placeholder="Subject"/>
+
+    </div>
+  </div>
+
+  <!-- 스마트 에디터 -->
+  <label for="editor">내용:</label>
+  <div id="editor"></div>
+  <br>
+
   <!-- 글 제목 입력란 -->
   <label for="novelName">제목:</label>
   <input type="text" id="novelName" name="novelName" th:field="novelName" required="required">
@@ -36,5 +50,12 @@
   <!-- 제출 버튼 -->
   <button type="submit">글쓰기</button>
 </form>
+
+<script type="text/javascript">
+  // 스마트 에디터 초기화
+  const simplemde = new SimpleMDE({
+    element: document.getElementById("editor"),
+  });
+</script>
 </body>
 </html>
