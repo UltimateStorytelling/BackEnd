@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //단순 접근
                 .antMatchers("/api/v1/authentication/**").permitAll() //로그인
                 .antMatchers("/api/v1/members/**").permitAll() //회원
+                .antMatchers("/api/v1/**").permitAll() //임시 모든 경로 허용
                 .antMatchers( //swagger
                         "/swagger-ui/**",
                         "/v2/api-docs",

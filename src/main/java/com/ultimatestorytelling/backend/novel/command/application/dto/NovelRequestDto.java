@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class NovelRequestDto {
 
+    private Long novelId;
     private String novelName;
-    private Long novelLike;
     private String novelWriter;
     private String mainCategory;
     private String subCategory;
@@ -20,6 +20,7 @@ public class NovelRequestDto {
 
     public Novel toEntity() {
         return Novel.builder()
+                .novelId(novelId)
                 .novelName(novelName)
                 .novelDetail(novelDetail)
                 .novelWriter(novelWriter)
@@ -28,4 +29,5 @@ public class NovelRequestDto {
                 .minCategory(minCategory)
                 .build();
     }
+
 }
