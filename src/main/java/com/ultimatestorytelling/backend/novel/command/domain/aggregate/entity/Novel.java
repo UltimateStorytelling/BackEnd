@@ -13,32 +13,32 @@ import javax.persistence.*;
 public class Novel extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "NOVEL_ID")
+    @Column
     private Long novelNo;
 
-    @Column(name = "NOVEL_NAME")
+    @Column
     private String novelName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NOVEL_WRITER")
+    @JoinColumn(name = "novel_writer")
     private Member member;
 
-    @Column(name = "MAIN_CATEGORY")
+    @Column
     private String mainCategory;
 
-    @Column(name = "SUB_CATEGORY")
+    @Column
     private String subCategory;
 
-    @Column(name = "MIN_CATEGORY")
+    @Column
     private String minCategory;
 
-    @Column(name = "NOVEL_DETAIL")
+    @Column
     private String novelDetail;
 
-    @Column(name = "NOVEL_VIEW")
+    @Column
     private Long novelView;
 
-    @Column(name = "NOVEL_IS_DELETED")
+    @Column
     private Boolean novelIsDeleted;
 
     @Builder

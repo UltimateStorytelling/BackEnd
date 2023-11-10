@@ -18,7 +18,7 @@ public class Member extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_no")
+    @Column
     private Long memberNo; //회원관리번호
 
     @Column(length = 100, nullable = false, unique = true)
