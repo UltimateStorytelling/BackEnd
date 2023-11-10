@@ -4,7 +4,6 @@ import com.ultimatestorytelling.backend.common.AuditingFields;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.novel.command.application.dto.update.NovelUpdateRequestDTO;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 

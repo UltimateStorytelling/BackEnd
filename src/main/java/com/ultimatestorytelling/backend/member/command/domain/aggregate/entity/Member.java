@@ -49,11 +49,12 @@ public class Member extends AuditingFields {
 
     //소설
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Novel> NovelList;
+    private List<Novel> novelList;
 
     @Builder
     public Member(Long memberNo, String memberEmail, String memberPwd, String memberImage,
-                  String memberNickname, boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority){
+                  String memberNickname, Boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority,
+                  List<Novel> novelList){
         this.memberNo = memberNo;
         this.memberEmail = memberEmail;
         this.memberPwd = memberPwd;
@@ -63,6 +64,7 @@ public class Member extends AuditingFields {
         this.reportCount = reportCount;
         this.memberRole = memberRole;
         this.authority = authority;
+        this.novelList = novelList;
     }
 
     //비밀번호 변경

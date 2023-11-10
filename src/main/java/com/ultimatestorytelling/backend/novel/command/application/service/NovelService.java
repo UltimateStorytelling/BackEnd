@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
@@ -133,7 +132,6 @@ public class NovelService {
 
         return novel.getNovelNo();
     }
-
     public String novelAi(String detail) {
 
 
