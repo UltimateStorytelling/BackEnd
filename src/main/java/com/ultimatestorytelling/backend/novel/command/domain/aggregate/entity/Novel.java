@@ -1,5 +1,8 @@
 package com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity;
 
+import com.ultimatestorytelling.backend.common.AuditingFields;
+import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
+import com.ultimatestorytelling.backend.novel.command.application.dto.update.NovelUpdateRequestDTO;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,25 +11,18 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Novel {
-
+public class Novel extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NOVEL_ID")
-    private Long novelId;
+    private Long novelNo;
 
     @Column(name = "NOVEL_NAME")
     private String novelName;
 
-    @Column(name = "NOVEL_LIKE")
-    private Long novelLike;
-
-    @Column(name = "NOVEL_WRITER")
-    private String novelWriter;
-
-    @Column(name = "NOVEL_DATE")
-    @DateTimeFormat(pattern = "YYYY-MM-DD")
-    private java.util.Date novelDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "NOVEL_WRITER")
+    private Member member;
 
     @Column(name = "MAIN_CATEGORY")
     private String mainCategory;
@@ -43,24 +39,39 @@ public class Novel {
     @Column(name = "NOVEL_VIEW")
     private Long novelView;
 
+    @Column(name = "NOVEL_IS_DELETED")
+    private Boolean novelIsDeleted;
+
     @Builder
-    public Novel(Long novelId, String novelName, Long novelLike, String novelWriter, String mainCategory, String subCategory, String minCategory, String novelDetail, Long novelView) {
-        this.novelId = novelId;
+    public Novel(Long novelNo, String novelName, Member member, String mainCategory, String subCategory,
+                 String minCategory, String novelDetail, Long novelView, Boolean novelIsDeleted) {
+        this.novelNo = novelNo;
         this.novelName = novelName;
-        this.novelLike = novelLike;
-        this.novelWriter = novelWriter;
+        this.member = member;
         this.mainCategory = mainCategory;
         this.subCategory = subCategory;
         this.minCategory = minCategory;
         this.novelDetail = novelDetail;
         this.novelView = novelView;
+        this.novelIsDeleted = novelIsDeleted;
     }
 
-    public void update(String novelName, String mainCategory, String subCategory, String minCategory, String novelDetail) {
-        this.novelName = novelName;
-        this.mainCategory = mainCategory;
-        this.subCategory = subCategory;
-        this.minCategory = minCategory;
-        this.novelDetail = novelDetail;
+    // 글 작성
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    // 글 수정
+    public void update(NovelUpdateRequestDTO novelUpdateRequestDTO) {
+        this.novelName = novelUpdateRequestDTO.getNovelName();
+        this.mainCategory = novelUpdateRequestDTO.getMainCategory();
+        this.subCategory = novelUpdateRequestDTO.getSubCategory();
+        this.minCategory = novelUpdateRequestDTO.getMinCategory();
+        this.novelDetail = novelUpdateRequestDTO.getNovelDetail();
+    }
+
+    // 글 삭제
+    public void delete() {
+        this.novelIsDeleted = true;
     }
 }

@@ -2,6 +2,7 @@ package com.ultimatestorytelling.backend.member.command.domain.aggregate.entity;
 
 import com.ultimatestorytelling.backend.common.AuditingFields;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberRole;
+import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,10 @@ public class Member extends AuditingFields {
     //소셜 로그인 테이블 조인
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Authority> authority;
+
+    //소설
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Novel> NovelList;
 
     @Builder
     public Member(Long memberNo, String memberEmail, String memberPwd, String memberImage,
