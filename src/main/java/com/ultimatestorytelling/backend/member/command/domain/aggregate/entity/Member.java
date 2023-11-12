@@ -2,6 +2,7 @@ package com.ultimatestorytelling.backend.member.command.domain.aggregate.entity;
 
 import com.ultimatestorytelling.backend.common.AuditingFields;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.enumvalue.MemberRole;
+import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class Member extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_no")
+    @Column
     private Long memberNo; //회원관리번호
 
     @Column(length = 100, nullable = false, unique = true)
@@ -46,9 +47,14 @@ public class Member extends AuditingFields {
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Authority> authority;
 
+    //소설
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Novel> novelList;
+
     @Builder
     public Member(Long memberNo, String memberEmail, String memberPwd, String memberImage,
-                  String memberNickname, boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority){
+                  String memberNickname, Boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority,
+                  List<Novel> novelList){
         this.memberNo = memberNo;
         this.memberEmail = memberEmail;
         this.memberPwd = memberPwd;
@@ -58,6 +64,7 @@ public class Member extends AuditingFields {
         this.reportCount = reportCount;
         this.memberRole = memberRole;
         this.authority = authority;
+        this.novelList = novelList;
     }
 
     //비밀번호 변경

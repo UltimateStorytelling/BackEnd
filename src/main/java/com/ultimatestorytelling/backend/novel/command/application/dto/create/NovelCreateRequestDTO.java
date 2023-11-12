@@ -1,33 +1,37 @@
-package com.ultimatestorytelling.backend.novel.command.application.dto;
+package com.ultimatestorytelling.backend.novel.command.application.dto.create;
 
 import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class NovelRequestDto {
+public class NovelCreateRequestDTO {
 
-    private Long novelId;
     private String novelName;
-    private String novelWriter;
     private String mainCategory;
     private String subCategory;
     private String minCategory;
     private String novelDetail;
-    private Long novelView;
 
+    @Builder
+    public NovelCreateRequestDTO(String novelName, String mainCategory, String subCategory, String minCategory, String novelDetail) {
+        this.novelName = novelName;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
+        this.minCategory = minCategory;
+        this.novelDetail = novelDetail;
+    }
     public Novel toEntity() {
         return Novel.builder()
-                .novelId(novelId)
                 .novelName(novelName)
                 .novelDetail(novelDetail)
-                .novelWriter(novelWriter)
                 .mainCategory(mainCategory)
                 .subCategory(subCategory)
                 .minCategory(minCategory)
+                .novelIsDeleted(false)
                 .build();
     }
-
 }

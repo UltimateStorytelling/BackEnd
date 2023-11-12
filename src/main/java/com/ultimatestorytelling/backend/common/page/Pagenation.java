@@ -6,10 +6,10 @@ public class Pagenation {
 
     public static PagingButtonInfo getPaginButtonInfo(Page page){
 
-        int currentPage = page.getNumber() + 1;
-        int startPage;
-        int endPage;
-        int defaultButtonCount = 10;
+        int currentPage = page.getNumber() + 1; // 페이지 번호 1부터 시작
+        int startPage; // 현재 페이지
+        int endPage; // 마지막 페이지
+        int defaultButtonCount = 10; //버튼 갯수
 
         startPage = (int) (Math.ceil((double) currentPage / defaultButtonCount) -1) * defaultButtonCount +1;
         endPage = startPage + defaultButtonCount - 1;
