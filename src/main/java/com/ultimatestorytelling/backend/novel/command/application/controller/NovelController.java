@@ -1,6 +1,7 @@
 package com.ultimatestorytelling.backend.novel.command.application.controller;
 
 import com.ultimatestorytelling.backend.common.message.ResponseMessage;
+import com.ultimatestorytelling.backend.novel.command.application.dto.ai.CreateAiDTO;
 import com.ultimatestorytelling.backend.novel.command.application.dto.create.NovelCreateRequestDTO;
 import com.ultimatestorytelling.backend.novel.command.application.dto.read.NovelReadResponseDTO;
 import com.ultimatestorytelling.backend.novel.command.application.dto.update.NovelUpdateRequestDTO;
@@ -12,10 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,8 +116,17 @@ public class NovelController {
 
     @ApiOperation(value = "ai소설 작성")
     @PostMapping("/novels/ai")
-    public String novelAi(@RequestParam String detail) {
-        return novelService.novelAi(detail);
+    public ResponseEntity<ResponseMessage> novelAi(@RequestBody CreateAiDTO createAiDTO) {
+        try {
+            String story = novelService.novelAi(createAiDTO.getStory());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("story", story);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(), "소설 생성 성공",responseMap));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null));
+        }
     }
 
 }

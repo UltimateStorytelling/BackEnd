@@ -3,6 +3,7 @@ package com.ultimatestorytelling.backend.novel.command.application.service;
 
 import com.ultimatestorytelling.backend.common.page.Pagenation;
 import com.ultimatestorytelling.backend.common.page.PagingButtonInfo;
+import com.ultimatestorytelling.backend.exception.CustomException;
 import com.ultimatestorytelling.backend.jwt.TokenProvider;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.member.command.domain.repository.MemberRepository;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class NovelService {
     private final NovelRepository novelRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
+    private final WebClient.Builder webClientBuilder;
 
     // 소설 전체 리스트 조회
     @Transactional(readOnly = true)
@@ -88,7 +91,6 @@ public class NovelService {
         return novel.getNovelNo();
     }
 
-
     // 게시글 수정
     @Transactional
     public Long update(Long novelNo, NovelUpdateRequestDTO novelDTO, String accessToken) {
@@ -132,39 +134,25 @@ public class NovelService {
 
         return novel.getNovelNo();
     }
-    public String novelAi(String detail) {
 
+    public String novelAi(String message) {
+        String apiUrl = "https://6b97-221-163-19-218.ngrok-free.app/generate_story_page3/"; // 호출하려는 API의 URL
 
-        RestTemplate rt = new RestTemplate();
+        //변수랑 매
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("story", message);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            String story = webClientBuilder.build()
+                    .post() // POST 요청
+                    .uri(apiUrl)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+                    .bodyValue(requestBody) // Request Body 설정
+                    .retrieve()
+                    .bodyToMono(String.class) // Response Body의 타입 설정
+                    .block();
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        return story;
 
-        map.add("detail", detail);
-
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, headers);
-
-        ResponseEntity<String> responseEntity = rt.exchange(
-            "http://localhost:8080",
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-
-        String response =responseEntity.getBody();
-        System.out.println(response);
-
-        return response;
     }
-//
-//    public NovelDTO findAllNovel(Pageable pageable) {
-//
-//        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0: pageable.getPageNumber() -1,
-//                pageable.getPageSize(),
-//                Sort.by("novelId").ascending());
-//
-//        return novelRepository.findAll(pageable).map(novel -> modelMapper.map(novel, NovelDTO.class));
-//    }
+
 }

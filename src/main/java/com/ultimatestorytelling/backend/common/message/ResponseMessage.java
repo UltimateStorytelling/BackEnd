@@ -14,13 +14,13 @@ public class ResponseMessage {
 
     private int httpStatus;
     private String message;
-    private Map<String, Object> results;
+    private Map<String, Object> result;
 
     @Builder
-    public ResponseMessage(int httpStatus, String message, Map<String, Object> results){
+    public ResponseMessage(int httpStatus, String message, Map<String, Object> result){
         this.httpStatus = httpStatus;
         this.message = message;
-        this.results = results;
+        this.result = result;
     }
 
 }
