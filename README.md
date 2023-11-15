@@ -18,7 +18,6 @@
         - Spring Security
         - JWT
 - 김지수
-
     - 소설 작성 기능
         - Naver SmartEditor3.0
         - Tymeleaf 를 활용한 웹 페이지 구현
@@ -30,12 +29,19 @@
         - 댓글, 좋아요등 엔티티 구현 준비
         - 회원가입 서비스 TDD구현 완료
 - 김지수
-  - 
+  - Novel CRUD
+        - JPA를 이용한 조회
 ### 3주차
 - 정재민
     - novel 리펙토링
+          - accessToken을 활용한 접근권한 설정
+- 김지수
+    - Tymeleaf 페이지 > 리엑트로 변경 
 
-
+### 4주차
+- 정재민, 김지수
+    - 리엑트 / 스프링 연결
+    - 
 ## ⭐️ 기술스택
 ### Language
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
