@@ -73,7 +73,7 @@ public class NovelController {
     public ResponseEntity<ResponseMessage> novelSave(@RequestBody NovelCreateRequestDTO novelCreateRequestDTO,
                                                      @RequestHeader("Authorization") String accessToken) {
         try {
-            Long NovelNo = novelService.save(novelCreateRequestDTO, accessToken);
+            Long NovelNo = novelService.saveNovel(novelCreateRequestDTO, accessToken);
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("NovelNo", NovelNo);
 
@@ -90,7 +90,7 @@ public class NovelController {
                                                        @PathVariable Long novelNo,
                                                        @RequestBody NovelUpdateRequestDTO novelDTO) {
         try{
-            Long resultNovelNo = novelService.update(novelNo, novelDTO, accessToken);
+            Long resultNovelNo = novelService.updateNovel(novelNo, novelDTO, accessToken);
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("NovelNo", resultNovelNo);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(), "소설 수정 성공",responseMap));
@@ -105,7 +105,7 @@ public class NovelController {
     public ResponseEntity<ResponseMessage> deleteNovel(@RequestHeader("Authorization") String accessToken,
                                                        @PathVariable Long novelNo) {
         try{
-            Long resultNovelNo = novelService.delete(novelNo, accessToken);
+            Long resultNovelNo = novelService.deleteNovel(novelNo, accessToken);
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("NovelNo", resultNovelNo);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(), "소설 삭제 성공",responseMap));
