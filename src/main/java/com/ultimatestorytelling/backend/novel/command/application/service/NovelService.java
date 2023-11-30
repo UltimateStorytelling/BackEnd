@@ -3,7 +3,6 @@ package com.ultimatestorytelling.backend.novel.command.application.service;
 
 import com.ultimatestorytelling.backend.common.page.Pagenation;
 import com.ultimatestorytelling.backend.common.page.PagingButtonInfo;
-import com.ultimatestorytelling.backend.exception.CustomException;
 import com.ultimatestorytelling.backend.jwt.TokenProvider;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.member.command.domain.repository.MemberRepository;
