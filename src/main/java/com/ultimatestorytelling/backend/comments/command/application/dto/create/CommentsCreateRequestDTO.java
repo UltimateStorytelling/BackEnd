@@ -3,6 +3,7 @@ package com.ultimatestorytelling.backend.comments.command.application.dto.create
 import com.ultimatestorytelling.backend.comments.command.domain.aggregate.entity.Comments;
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class CommentsCreateRequestDTO {
 
     private String commentsContent;
 
+    @Builder
     public CommentsCreateRequestDTO(String CommentsContent) {
         this.commentsContent = CommentsContent;
     }

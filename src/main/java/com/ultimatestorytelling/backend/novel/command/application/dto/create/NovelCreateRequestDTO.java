@@ -2,7 +2,6 @@ package com.ultimatestorytelling.backend.novel.command.application.dto.create;
 
 import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
