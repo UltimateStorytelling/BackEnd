@@ -6,6 +6,7 @@ import com.ultimatestorytelling.backend.novel.command.application.dto.create.Nov
 import com.ultimatestorytelling.backend.novel.command.application.dto.read.NovelReadResponseDTO;
 import com.ultimatestorytelling.backend.novel.command.application.dto.update.NovelUpdateRequestDTO;
 import com.ultimatestorytelling.backend.novel.command.application.service.NovelService;
+import com.ultimatestorytelling.backend.novel.command.domain.service.NovelAiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class NovelController {
 
     private final NovelService novelService;
+    private final NovelAiService novelAiService;
 
     //전체소설 조회
     @ApiOperation(value = "전체소설 조회")
@@ -53,13 +55,13 @@ public class NovelController {
 
     //소설번호로 조회
     @ApiOperation(value = "소설번호로 조회")
-    @GetMapping("/feeds/{novelNo}")
-    public ResponseEntity<ResponseMessage> findFeedById(@PathVariable Long novelNo){
+    @GetMapping("/novels/{novelNo}")
+    public ResponseEntity<ResponseMessage> findNovelById(@PathVariable Long novelNo){
 
         try{
-            NovelReadResponseDTO feed = novelService.findNovel(novelNo);
+            NovelReadResponseDTO novelDTO = novelService.findNovel(novelNo);
             Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("feeds", feed);
+            responseMap.put("novel", novelDTO);
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(HttpStatus.OK.value(), "소설 조회성공",responseMap));
         } catch (Exception e){
@@ -118,7 +120,7 @@ public class NovelController {
     @PostMapping("/novels/ai")
     public ResponseEntity<ResponseMessage> novelAi(@RequestBody CreateAiDTO createAiDTO) {
         try {
-            String story = novelService.novelAi(createAiDTO.getStory());
+            String story = novelAiService.novelAi(createAiDTO.getStory());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
             Map<String, Object> responseMap = new HashMap<>();

@@ -19,6 +19,7 @@ public class NovelReadResponseDTO {
     private Long novelView;
 
 
+
     public NovelReadResponseDTO(Novel novel){
         this.novelNo = novel.getNovelNo();
         this.novelName = novel.getNovelName();

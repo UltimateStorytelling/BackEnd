@@ -107,7 +107,6 @@ public class MemberService {
     }
 
     //회원정보변경
-    // 회원 정보 변경
     @Transactional
     public void updateMemberInfo(UpdateInfoRequestDTO requestDTO, Long memberNo, String accessToken) {
 

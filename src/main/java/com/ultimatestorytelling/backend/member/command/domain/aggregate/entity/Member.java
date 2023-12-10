@@ -43,7 +43,7 @@ public class Member extends AuditingFields {
     @Column
     private int reportCount;
 
-    //소셜 로그인 테이블 조인
+    //로그인 테이블 조인
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Authority> authority;
 
@@ -53,8 +53,8 @@ public class Member extends AuditingFields {
 
     @Builder
     public Member(Long memberNo, String memberEmail, String memberPwd, String memberImage,
-                  String memberNickname, Boolean memberIsDeleted, int reportCount, MemberRole memberRole, List<Authority> authority,
-                  List<Novel> novelList){
+                  String memberNickname, Boolean memberIsDeleted, int reportCount, MemberRole memberRole,
+                  List<Authority> authority, List<Novel> novelList){
         this.memberNo = memberNo;
         this.memberEmail = memberEmail;
         this.memberPwd = memberPwd;
@@ -88,4 +88,5 @@ public class Member extends AuditingFields {
     public void setMemberImage(String memberImage) {
         this.memberImage = memberImage;
     }
+
 }

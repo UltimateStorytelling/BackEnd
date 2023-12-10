@@ -1,13 +1,13 @@
 package com.ultimatestorytelling.backend.novel.command.application.dto.create;
 
+import com.ultimatestorytelling.backend.member.command.domain.aggregate.entity.Member;
 import com.ultimatestorytelling.backend.novel.command.domain.aggregate.entity.Novel;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor
 public class NovelCreateRequestDTO {
 
     private String novelName;
@@ -24,7 +24,7 @@ public class NovelCreateRequestDTO {
         this.minCategory = minCategory;
         this.novelDetail = novelDetail;
     }
-    public Novel toEntity() {
+    public Novel toEntity(Member member) {
         return Novel.builder()
                 .novelName(novelName)
                 .novelDetail(novelDetail)
@@ -32,6 +32,7 @@ public class NovelCreateRequestDTO {
                 .subCategory(subCategory)
                 .minCategory(minCategory)
                 .novelIsDeleted(false)
+                .member(member)
                 .build();
     }
 }
